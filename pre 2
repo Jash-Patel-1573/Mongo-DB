@@ -1,0 +1,39 @@
+db.items.insert({id:"FW05",name:"Face Wash",manufacturer:"Attitude",price:45,qty:55,stockdate:"15-04-18",dealer:"Surbhi Collection"},
+{id:"BS01",name:"Bath Soap",manufacturer:"Persona",price:55,qty:80,stockdate:"11-02-18",dealer:"Krishna Cosmetik"})
+
+//1. Display only the name and price of items, whose manufacturer is “Persona”. 
+db.items.find({manufacturer:"Persona",name: 1 ,price:1,qty:1,stockdate:1,deler:1, _id: 0})
+
+//2. Count the total number of manufacturers.
+db.items.distinct("manufacturer").length
+
+//3. Display all the item’s details, whose names starts from "Sh"
+db.items.find( { name : /^Sh./ } )
+
+//4. Display the items details of all different types of pens
+db.items.find( { name : /.Pen./ } )
+
+//5. Display only the name and price of product along with quantity, whose price is more than 80
+db.items.find({price:{$gt: 80}},{name:1, price:1, _id: 0})
+
+//6. Show only the item and its price of those items, whose price is less equal to 20. 
+db.items.find({price:{$lte: 20}},{name:1, price:1, _id: 0})
+
+//7. Display the details of those items; whose dealer name is “Surbhi Collection” or quantity is more than 100
+db.items.find({dealer:"Surbhi Collection",qty:{$gt: 100}},{name:1, price:1, _id: 0})
+
+//8. Show the details of items, whose quantity is in the range of 50 to 100
+db.items.find({qty:{$gte: 50, $lte: 100}})
+
+//9. Increase the price of items by 10.
+db.items.updateMany({},{$inc:{price:10}})
+
+//10. Decrease the quantity of items by 30.
+db.items.updateMany({},{$inc:{qty:-30}})
+
+//11. Update operation to increase price of all items by 15%
+db.items.updateMany({},[{$set:{price:{$multiply:["$price",1.15]}}}]);
+
+//12. Find the maximum and minimum price of item in a single query
+db.items.aggregate([{$group:{_id:null , minprice:{$min:"$price"},maxprice:{$max:"$price"}}}])
+
